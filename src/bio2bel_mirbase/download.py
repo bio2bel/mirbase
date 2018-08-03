@@ -9,3 +9,4 @@ from .constants import DATA_URL, DATA_PATH
 
 def download():
     urlretrieve(DATA_URL, DATA_PATH)
+    return DATA_PATH
