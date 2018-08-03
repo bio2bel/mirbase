@@ -2,4 +2,15 @@
 
 """Constants for Bio2BEL miRBase."""
 
+from bio2bel import get_data_dir
+
+import os
+
 VERSION = '0.0.1-dev'
+
+DATA_URL = "ftp://mirbase.org/pub/mirbase/CURRENT/miRNA.dat.gz"
+
+MODULE_NAME = "mirbase"
+
+DATA_DIR = get_data_dir(MODULE_NAME)
+DATA_PATH = os.path.join(DATA_DIR, "miRNA.dat.gz")
