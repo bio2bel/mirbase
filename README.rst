@@ -2,6 +2,14 @@ Bio2BEL miRBase |build|
 =======================
 Enumerate miRBase namespace, produce equivalency table, and predicted MTI relationships
 
+Installation
+------------
+``bio2bel_mirbase`` can be installed from the latest code on `GitHub <https://github.com/bio2bel/mirbase>`_ with:
+
+.. code-block:: sh
+
+    $ python3 -m pip install git+https://github.com/bio2bel/mirbase.git@master
+
 References
 ----------
 - http://www.mirbase.org/
