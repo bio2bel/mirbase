@@ -29,6 +29,8 @@ jobs:
 matrix:
   allow_failures:
       - env: TOXENV=pylint
+      - env: TOXENV=doc8
+      - env: TOXENV=docs
 
 install:
     - sh -c 'if [ "$TOXENV" = "py" ]; then pip install tox codecov; else pip install tox; fi'
