@@ -4,6 +4,8 @@
 
 import gzip
 
+from tqdm import tqdm
+
 
 def mirbase_to_dict(path):
     """Parse miRNA data from filepath and convert it to dictionary.
@@ -11,46 +13,48 @@ def mirbase_to_dict(path):
     The structure of dictionary is {ID:[AC,DE,[[miRNA],[miRNA]]]}
 
     :param path: The path to the miRBase file
-    :rtype: dict
+    :rtype: list[dict]
     """
     with gzip.open(path, 'r') as file:
         groups = []
+
         for line in file:
-            if line.startswith(b'ID'):
+            line = line.decode('utf-8')
+
+            if line.startswith('ID'):
                 listnew = []
                 groups.append(listnew)
+
             groups[-1].append(line)
 
         # print(groups[0][0][5:18])
-        mirna_dict = {}
-        for group in groups:
+        result = []
+        for group in tqdm(groups):
+
             identifier = group[0][5:23].strip()
-            mirna_dict[identifier] = []
-
             accession = group[2][3:-2].strip()
-            mirna_dict[identifier].append(accession)
-
             description = group[4][3:-1].strip()
-            mirna_dict[identifier].append(description)
-            list_mirna = []
 
+            d = {
+                'identifier': identifier,
+                'description': description,
+                'accession': accession
+            }
+
+            list_mirna = []
             for i in range(0, len(group)):
                 if 'FT   miRNA    ' in str(group[i]):
                     list_mirna.append(i)
-            mirna_dict[identifier].append([])
 
-            for index in list_mirna:
-                mirna_dict[identifier][-1].append([])
-                location = group[index][10:-1].strip()
-                # print(location)
-                mirna_dict[identifier][-1][-1].append(location)
+            d['products'] = [
+                {
+                    'location': group[index][10:-1].strip(),
+                    'accession': group[index + 1][33:-2],
+                    'product': group[index + 2][31:-2],
+                }
+                for index in list_mirna
+            ]
 
-                accession = group[index + 1][33:-2]
-                # print(accession)
-                mirna_dict[identifier][-1][-1].append(accession)
+            result.append(d)
 
-                product = group[index + 2][31:-2]
-                # print(product)
-                mirna_dict[identifier][-1][-1].append(product)
-
-    return mirna_dict
+    return result
