@@ -2,9 +2,9 @@
 
 """Constants for Bio2BEL miRBase."""
 
-from bio2bel import get_data_dir
-
 import os
+
+from bio2bel import get_data_dir
 
 VERSION = '0.0.1-dev'
 

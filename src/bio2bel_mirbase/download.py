@@ -2,19 +2,17 @@
 
 """Utilities for downloading miRBase."""
 
+import logging
+import os
 from urllib.request import urlretrieve
 
-from .constants import DATA_URL, DATA_PATH
+from .constants import DATA_PATH, DATA_URL
 
-import os
-import logging
-
-# build the logger using this module's name at runtime
 log = logging.getLogger(__name__)
 
 
 def download(force_download=False):
-    """Downloads the compounds information
+    """Download miRBase.
 
     :param bool force_download: If true, overwrites a previously cached file
     :rtype: str
