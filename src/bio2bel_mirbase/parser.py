@@ -5,7 +5,9 @@
 import gzip
 
 from pybel import BELGraph
+from pybel.constants import NAMESPACE_DOMAIN_GENE
 from pybel.dsl import mirna
+from pybel.resources import write_namespace
 from tqdm import tqdm
 
 
@@ -67,6 +69,27 @@ def mirbase_to_dict(path):
             result.append(entry_data)
 
     return result
+
+
+def make_bel_namespace(mirbase_dict, file=None):
+    """Make a BEL namespace with the information from miRBase."""
+    values = [
+        entry['name']
+        for entry in mirbase_dict
+    ]
+
+    write_namespace(
+        namespace_name='mirbase',
+        namespace_keyword='mirbase',
+        namespace_domain=NAMESPACE_DOMAIN_GENE,
+        author_name='',
+        citation_name='',
+        functions='GM',
+        values=values,
+        file=file,
+    )
+
+
 def make_bel(mirbase_dict):
     """Make a BEL graph with the equivalences between miRBase and other RNA databases.
 
