@@ -30,31 +30,38 @@ def mirbase_to_dict(path):
         # print(groups[0][0][5:18])
         result = []
         for group in tqdm(groups):
-
             identifier = group[0][5:23].strip()
             accession = group[2][3:-2].strip()
             description = group[4][3:-1].strip()
 
-            d = {
+            entry_data = {
                 'identifier': identifier,
                 'description': description,
                 'accession': accession
             }
 
-            list_mirna = []
-            for i in range(0, len(group)):
-                if 'FT   miRNA    ' in str(group[i]):
-                    list_mirna.append(i)
+            mature_mirna_lines = [
+                i
+                for i, element in enumerate(group)
+                if 'FT   miRNA    ' in element
+            ]
 
-            d['products'] = [
+            entry_data['products'] = [
                 {
                     'location': group[index][10:-1].strip(),
                     'accession': group[index + 1][33:-2],
                     'product': group[index + 2][31:-2],
                 }
-                for index in list_mirna
+                for index in mature_mirna_lines
             ]
 
-            result.append(d)
+            entry_data['xrefs'] = [
+                {
+                    'database': '',
+                    'accession': '',
+                }
+            ]  # TODO @lingling93
+
+            result.append(entry_data)
 
     return result
