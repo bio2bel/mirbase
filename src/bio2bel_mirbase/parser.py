@@ -4,6 +4,8 @@
 
 import gzip
 
+from pybel import BELGraph
+from pybel.dsl import mirna
 from tqdm import tqdm
 
 
@@ -30,14 +32,14 @@ def mirbase_to_dict(path):
         # print(groups[0][0][5:18])
         result = []
         for group in tqdm(groups):
-            identifier = group[0][5:23].strip()
-            accession = group[2][3:-2].strip()
+            name = group[0][5:23].strip()
+            identifier = group[2][3:-2].strip()
             description = group[4][3:-1].strip()
 
             entry_data = {
-                'identifier': identifier,
+                'name': name,
                 'description': description,
-                'accession': accession
+                'identifier': identifier
             }
 
             mature_mirna_lines = [
@@ -58,10 +60,35 @@ def mirbase_to_dict(path):
             entry_data['xrefs'] = [
                 {
                     'database': '',
-                    'accession': '',
+                    'identifier': '',
                 }
             ]  # TODO @lingling93
 
             result.append(entry_data)
+
+    return result
+def make_bel(mirbase_dict):
+    """Make a BEL graph with the equivalences between miRBase and other RNA databases.
+
+    :param mirbase_dict: The miRBase dictionary
+    :rtype: pybel.BELGraph
+    """
+    result = BELGraph()
+
+    for entry in mirbase_dict:
+
+        mirbase_node = mirna(
+            namespace='mirbase',
+            name=entry['name'],
+            identifier=entry['identifier'],
+        )
+
+        for xref in entry['xrefs']:
+            xref_node = mirna(
+                namespace=xref['database'],
+                identifier=xref['identifier'],
+            )
+
+            result.add_equivalence(mirbase_node, xref_node)
 
     return result
