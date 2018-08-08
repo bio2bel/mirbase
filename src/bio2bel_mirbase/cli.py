@@ -12,12 +12,12 @@ from .parser import mirbase_to_dict
 
 
 @click.command()
-@click.option('--file', type=click.File('w'), default=sys.stdout, help='the directory to save file')
+@click.option('-f', '--file', type=click.File('w'), default=sys.stdout, help='the directory to save file')
 def main(file):
     """Download and write miRBase to a file."""
     path = download()
     mirbase_dict = mirbase_to_dict(path)
-    json.dump(mirbase_dict, file)
+    json.dump(mirbase_dict, file, indent=2)
 
 
 if __name__ == '__main__':
