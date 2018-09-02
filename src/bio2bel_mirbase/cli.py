@@ -8,12 +8,10 @@ import sys
 import click
 
 from .download import download
-from .parser import make_bel_namespace, mirbase_to_dict
+from .manager import Manager
+from .parser import make_bel_namespace, parse_mirbase
 
-
-@click.group()
-def main():
-    pass
+main = Manager.get_cli()
 
 
 @main.command()
@@ -21,7 +19,7 @@ def main():
 def write_json(file):
     """Download and write miRBase to a file."""
     path = download()
-    mirbase_dict = mirbase_to_dict(path)
+    mirbase_dict = parse_mirbase(path)
     json.dump(mirbase_dict, file, indent=2)
 
 
@@ -30,7 +28,7 @@ def write_json(file):
 def write_belns(file):
     """Download and write miRBase to a BELNS."""
     path = download()
-    mirbase_dict = mirbase_to_dict(path)
+    mirbase_dict = parse_mirbase(path)
     make_bel_namespace(mirbase_dict, file)
 
 

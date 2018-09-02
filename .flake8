@@ -20,7 +20,11 @@ ignore = S101, S310
 max-line-length = 120
 
 # flake8-import-order
-application-import-names = bio2bel_mirbase
+application-import-names =
+    bio2bel_mirbase
+    bio2bel
+    pybel
+    tests
 import-order-style = pycharm
 
 # mccabe

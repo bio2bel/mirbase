@@ -3,15 +3,17 @@
 """This module has the parser for miRBase."""
 
 import gzip
+from typing import Dict, List
+
+from tqdm import tqdm
 
 from pybel import BELGraph
 from pybel.constants import NAMESPACE_DOMAIN_GENE
 from pybel.dsl import mirna
 from pybel.resources import write_namespace
-from tqdm import tqdm
 
 
-def mirbase_to_dict(path):
+def parse_mirbase(path: str) -> List[Dict]:
     """Parse miRNA data from filepath and convert it to dictionary.
 
     The structure of dictionary is {ID:[AC,DE,[[miRNA],[miRNA]]]}
@@ -33,7 +35,7 @@ def mirbase_to_dict(path):
 
         # print(groups[0][0][5:18])
         result = []
-        for group in tqdm(groups):
+        for group in tqdm(groups, desc='parsing'):
             name = group[0][5:23].strip()
             identifier = group[2][3:-2].strip()
             description = group[4][3:-1].strip()
@@ -71,11 +73,11 @@ def mirbase_to_dict(path):
     return result
 
 
-def make_bel_namespace(mirbase_dict, file=None):
+def make_bel_namespace(mirbase_list: List[Dict], file=None) -> None:
     """Make a BEL namespace with the information from miRBase."""
     values = [
         entry['name']
-        for entry in mirbase_dict
+        for entry in mirbase_list
     ]
 
     write_namespace(
@@ -90,15 +92,14 @@ def make_bel_namespace(mirbase_dict, file=None):
     )
 
 
-def make_bel(mirbase_dict):
+def make_bel(mirbase_list: List[Dict]) -> BELGraph:
     """Make a BEL graph with the equivalences between miRBase and other RNA databases.
 
-    :param mirbase_dict: The miRBase dictionary
-    :rtype: pybel.BELGraph
+    :param mirbase_list: The miRBase dictionary
     """
     result = BELGraph()
 
-    for entry in mirbase_dict:
+    for entry in mirbase_list:
 
         mirbase_node = mirna(
             namespace='mirbase',
