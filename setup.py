@@ -2,7 +2,7 @@
 
 """Setup module for Bio2BEL miRBase."""
 
-import setuptools
+from setuptools import setup
 
 if __name__ == '__main__':
-    setuptools.setup()
+    setup()

@@ -61,9 +61,9 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, FlaskMixin):
         """Check if the database is populated."""
         return 0 < self.count_sequences()
 
-    def populate(self) -> None:
+    def populate(self, force_download: bool = False) -> None:
         """Populate the database."""
-        path = download()
+        path = download(force_download=force_download)
         mirbase_list = parse_mirbase(path)
         self._populate_list(mirbase_list)
 
