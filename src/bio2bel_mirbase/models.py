@@ -8,6 +8,13 @@ from sqlalchemy.orm import backref, relationship
 
 from .constants import MODULE_NAME
 
+__all__ = [
+    'Sequence',
+    'MatureSequence',
+    'Species',
+    'Base',
+]
+
 Base: DeclarativeMeta = declarative_base()
 
 DESCRIPTOR_TABLE_NAME = f'{MODULE_NAME}_mirna'
