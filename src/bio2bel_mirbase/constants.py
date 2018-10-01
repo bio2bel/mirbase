@@ -6,7 +6,7 @@ import os
 
 from bio2bel import get_data_dir
 
-VERSION = '0.0.1-dev'
+VERSION = '0.0.1'
 
 DATA_URL = "ftp://mirbase.org/pub/mirbase/CURRENT/miRNA.dat.gz"
 
