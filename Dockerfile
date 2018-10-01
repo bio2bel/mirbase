@@ -1,4 +1,3 @@
-
 # 1. Build with: docker build -t bio2bel/mirbase .
 # 2. Run with docker run -p 5000:5000 bio2bel/mirbase (-p maps the port)
 FROM python:3.7.0
