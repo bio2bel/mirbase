@@ -19,7 +19,6 @@ def parse_mirbase(path: str) -> List[Dict]:
     The structure of dictionary is {ID:[AC,DE,[[miRNA],[miRNA]]]}
 
     :param path: The path to the miRBase file
-    :rtype: list[dict]
     """
     with gzip.open(path, 'r') as file:
         groups = []
