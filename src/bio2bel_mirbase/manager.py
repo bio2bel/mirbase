@@ -32,7 +32,7 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, FlaskMixin):
 
     namespace_model = Sequence
     identifiers_recommended = 'miRBase'
-    identifiers_pattern = 'MI\d{7}'
+    identifiers_pattern = r'MI\d{7}'
     identifiers_miriam = 'MIR:00000078'
     identifiers_namespace = 'mirbase'
     identifiers_url = 'http://identifiers.org/mirbase/'

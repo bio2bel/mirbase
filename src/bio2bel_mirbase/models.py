@@ -43,7 +43,7 @@ class Sequence(Base):
     id = Column(Integer, primary_key=True)
 
     mirbase_id = Column(String(255), nullable=False, unique=True, index=True,
-                        doc='miRBase sequence matching ``MI\d{7}``')
+                        doc=r'miRBase sequence matching ``MI\d{7}``')
 
     name = Column(String(255), nullable=False, unique=True, index=True)
     description = Column(Text, nullable=False)
@@ -68,7 +68,7 @@ class MatureSequence(Base):
     id = Column(Integer, primary_key=True)
 
     mirbase_mature_id = Column(String(255), nullable=False, unique=True, index=True,
-                               doc='miRBase mature sequence matching ``MIMAT\d{7}``')
+                               doc=r'miRBase mature sequence matching ``MIMAT\d{7}``')
 
     name = Column(String(255), nullable=False, index=True)
 
