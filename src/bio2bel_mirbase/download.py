@@ -2,25 +2,19 @@
 
 """Utilities for downloading miRBase."""
 
-import logging
-import os
-from urllib.request import urlretrieve
+from bio2bel.downloading import make_df_getter, make_downloader
+from .constants import DEFINITIONS_PATH, DEFINITIONS_URL, SPECIES_HEADER, SPECIES_PATH, SPECIES_URL
 
-from .constants import DATA_PATH, DATA_URL
+__all__ = [
+    'get_species_df',
+    'download_definitions',
+]
 
-log = logging.getLogger(__name__)
+get_species_df = make_df_getter(
+    SPECIES_URL,
+    SPECIES_PATH,
+    sep='\t',
+    names=SPECIES_HEADER,
+)
 
-
-def download(force_download: bool = False) -> str:
-    """Download miRBase.
-
-    :param force_download: If true, overwrites a previously cached file
-    :returns: The path to which the file was downloaded (or loaded)
-    """
-    if os.path.exists(DATA_PATH) and not force_download:
-        log.info('using cached data at %s', DATA_PATH)
-    else:
-        log.info('downloading %s to %s', DATA_URL, DATA_PATH)
-        urlretrieve(DATA_URL, DATA_PATH)
-
-    return DATA_PATH
+download_definitions = make_downloader(DEFINITIONS_URL, DEFINITIONS_PATH)
