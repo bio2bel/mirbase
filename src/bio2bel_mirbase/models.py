@@ -34,6 +34,7 @@ class Species(Base):
     organism = Column(String(16), unique=True, index=True, doc='Three letter species code')
     division = Column(String(16), unique=True, index=True, doc='Three letter species code')
     name = Column(Text, unique=True, index=True, doc='Three letter species code')
+    tree = Column(Text)
     taxonomy_id = Column(String(32), doc='NCBI taxonomy identifier')
 
 

@@ -79,12 +79,12 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
     def populate(self, species_path: Optional[str] = None, definitions_path: Optional[str] = None,
                  force_download: bool = False) -> None:
         """Populate the database."""
-        # self._populate_species(path=species_path, force_download=force_download)
+        self._populate_species(path=species_path, force_download=force_download)
         self._populate_definitions(path=definitions_path, force_download=force_download)
 
     def _populate_species(self, path: Optional[str] = None, force_download: bool = False):
         """Populate the species in the database."""
-        species_df = get_species_df(path)
+        species_df = get_species_df(path, force_download=force_download)
         species_df.to_sql(Species.__tablename__, con=self.engine, if_exists='append', index=False)
         self.session.commit()
 
