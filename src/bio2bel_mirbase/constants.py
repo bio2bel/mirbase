@@ -6,7 +6,7 @@ import os
 
 from bio2bel import get_data_dir
 
-VERSION = '0.0.1'
+VERSION = '0.1.0-dev'
 
 MODULE_NAME = "mirbase"
 DATA_DIR = get_data_dir(MODULE_NAME)
