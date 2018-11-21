@@ -135,6 +135,10 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
     def _get_identifier(sequence: Sequence) -> str:
         return sequence.mirbase_id
 
+    def build_name_to_mirbase_id_mapping(self) -> Mapping[str, str]:
+        """Get a mapping from miRBase Names to identifiers"""
+        return dict(self.session.query(Sequence.name, Sequence.mirbase_id))
+
     def to_bel(self) -> BELGraph:
         """Convert miRBase to BEL."""
         result = BELGraph()
