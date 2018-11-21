@@ -28,7 +28,6 @@ class Species(Base):
     """Represents a taxonomy."""
 
     __tablename__ = SPECIES_TABLE_NAME
-
     id = Column(Integer, primary_key=True)
 
     organism = Column(String(16), unique=True, index=True, doc='Three letter species code')
@@ -45,7 +44,6 @@ class Sequence(Base):
     """
 
     __tablename__ = SEQUENCE_TABLE_NAME
-
     id = Column(Integer, primary_key=True)
 
     mirbase_id = Column(String(255), nullable=False, unique=True, index=True,
@@ -73,7 +71,6 @@ class SequenceXrefs(Base):
     """Represents cross-references for sequences."""
 
     __tablename__ = SEQUENCE_XREF_TABLE_NAME
-
     id = Column(Integer, primary_key=True)
 
     sequence_id = Column(ForeignKey(f'{Sequence.__tablename__}.id'))
@@ -87,12 +84,9 @@ class MatureSequence(Base):
     """Represents a miRBase mature sequence.
 
     See: https://www.ebi.ac.uk/miriam/main/datatypes/MIR:00000235
-
-    Regular Expression:
     """
 
     __tablename__ = MATURE_TABLE_NAME
-
     id = Column(Integer, primary_key=True)
 
     mirbase_mature_id = Column(String(255), nullable=False, unique=True, index=True,
