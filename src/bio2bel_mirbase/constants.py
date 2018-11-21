@@ -23,3 +23,6 @@ SPECIES_HEADER = [
     'tree',
     'taxonomy_id',
 ]
+
+ALIASES_URL = 'ftp://mirbase.org/pub/mirbase/CURRENT/aliases.txt.gz'
+ALIASES_PATH = os.path.join(DATA_DIR, 'aliases.txt.gz')

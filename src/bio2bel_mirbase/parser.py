@@ -3,9 +3,31 @@
 """This module has the parser for miRBase."""
 
 import gzip
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable, List, Mapping, Optional
 
 from tqdm import tqdm
+
+from bio2bel_mirbase.download import download_definitions
+
+__all__ = [
+    'get_definitions',
+    'parse_definitions',
+    'get_mirbase_name_to_id',
+]
+
+
+def get_definitions(path: Optional[str] = None, force_download: bool = False) -> List[Dict]:
+    if path is None:
+        path = download_definitions(force_download=force_download)
+    return parse_definitions(path)
+
+
+def get_mirbase_name_to_id() -> Mapping[str, str]:
+    """Get the name to id mapping."""
+    return {
+        d['name']: d['identifier']
+        for d in get_definitions()
+    }
 
 
 def parse_definitions(path: str) -> List[Dict]:
@@ -15,15 +37,21 @@ def parse_definitions(path: str) -> List[Dict]:
 
     :param path: The path to the miRBase file
     """
-    with (gzip.open(path, 'r') if path.endswith('.gz') else open(path)) as file:
-        return process_definitions_lines(file)
+    file_handle = (
+        gzip.open(path, 'rt')
+        if path.endswith('.gz') else
+        open(path)
+    )
+    with file_handle as file:
+        print(file_handle)
+        return _process_definitions_lines(file)
 
 
-def process_definitions_lines(lines: Iterable[str]) -> List[Dict]:
+def _process_definitions_lines(lines: Iterable[str]) -> List[Dict]:
     """Process the lines of the definitions file."""
     groups = []
 
-    for line in lines:
+    for line in lines:  # TODO replace with itertools.groupby
         if line.startswith('ID'):
             listnew = []
             groups.append(listnew)

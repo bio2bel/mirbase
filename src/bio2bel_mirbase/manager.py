@@ -15,9 +15,9 @@ from pybel import BELGraph
 from pybel.dsl import mirna
 from pybel.manager.models import Namespace, NamespaceEntry
 from .constants import MODULE_NAME
-from .download import download_definitions, get_species_df
+from .download import get_species_df
 from .models import Base, MatureSequence, Sequence, Species
-from .parser import parse_definitions
+from .parser import get_definitions
 
 __all__ = [
     'Manager',
@@ -89,9 +89,7 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
         self.session.commit()
 
     def _populate_definitions(self, path: Optional[str] = None, force_download: bool = False):
-        if path is None:
-            path = download_definitions(force_download=force_download)
-        definitions = parse_definitions(path)
+        definitions = get_definitions(path=path, force_download=force_download)
         self._populate_definitions_helper(definitions)
 
     def _populate_definitions_helper(self, definitions_list: List[Dict]) -> None:
@@ -135,7 +133,7 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
     def _get_identifier(sequence: Sequence) -> str:
         return sequence.mirbase_id
 
-    def build_name_to_mirbase_id_mapping(self) -> Mapping[str, str]:
+    def build_mirbase_name_to_id(self) -> Mapping[str, str]:
         """Get a mapping from miRBase Names to identifiers"""
         return dict(self.session.query(Sequence.name, Sequence.mirbase_id))
 
