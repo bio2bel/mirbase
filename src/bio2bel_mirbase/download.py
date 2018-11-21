@@ -15,6 +15,7 @@ get_species_df = make_df_getter(
     SPECIES_PATH,
     sep='\t',
     names=SPECIES_HEADER,
+    skiprows=1,
 )
 
 download_definitions = make_downloader(DEFINITIONS_URL, DEFINITIONS_PATH)
