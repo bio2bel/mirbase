@@ -17,6 +17,7 @@ __all__ = [
 
 
 def get_definitions(path: Optional[str] = None, force_download: bool = False) -> List[Dict]:
+    """Get the definitions as a list of dictionaries."""
     if path is None:
         path = download_definitions(force_download=force_download)
     return parse_definitions(path)

@@ -2,15 +2,14 @@
 
 """Utilities for downloading miRBase."""
 
+import logging
 from collections import defaultdict
 from typing import List, Mapping, Tuple
 
 from bio2bel.downloading import make_df_getter, make_downloader
 from .constants import (
-    ALIASES_PATH, ALIASES_URL, DEFINITIONS_PATH, DEFINITIONS_URL, SPECIES_HEADER, SPECIES_PATH,
-    SPECIES_URL,
+    ALIASES_PATH, ALIASES_URL, DEFINITIONS_PATH, DEFINITIONS_URL, SPECIES_HEADER, SPECIES_PATH, SPECIES_URL,
 )
-import logging
 
 __all__ = [
     'get_species_df',
@@ -39,6 +38,7 @@ get_aliases_df = make_df_getter(
 
 
 def get_mirbase_alias_to_id() -> Tuple[Mapping[str, str], Mapping[str, List[str]]]:
+    """Get the miRBase alias to miRBase identifier dictionary."""
     rv = {}
     multiple = defaultdict(list)
     df = get_aliases_df()
