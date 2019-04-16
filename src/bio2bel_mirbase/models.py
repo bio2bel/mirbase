@@ -30,11 +30,11 @@ class Species(Base):
     __tablename__ = SPECIES_TABLE_NAME
     id = Column(Integer, primary_key=True)
 
-    organism = Column(String(16), unique=True, index=True, doc='Three letter species code')
-    division = Column(String(16), unique=True, index=True, doc='Three letter species code')
+    organism = Column(String(16), unique=True, index=True, doc='Organism code')
+    division = Column(String(3), index=True, doc='Three letter division code')
     name = Column(Text, unique=True, index=True, doc='Three letter species code')
     tree = Column(Text)
-    taxonomy_id = Column(String(32), doc='NCBI taxonomy identifier')
+    taxonomy_id = Column(String(32), unique=True, doc='NCBI taxonomy identifier')
 
 
 class Sequence(Base):

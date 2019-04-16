@@ -85,6 +85,7 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
     def _populate_species(self, path: Optional[str] = None, force_download: bool = False):
         """Populate the species in the database."""
         species_df = get_species_df(path, force_download=force_download)
+        species_df.taxonomy_id = species_df.taxonomy_id.map(str)
         species_df.to_sql(Species.__tablename__, con=self.engine, if_exists='append', index=False)
         self.session.commit()
 
