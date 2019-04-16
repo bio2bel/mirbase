@@ -1,5 +1,5 @@
-Bio2BEL miRBase |build|
-=======================
+Bio2BEL miRBase |build| |zenodo|
+================================
 Enumerate miRBase namespace, produce equivalency table, and predicted MTI relationships
 
 Installation
@@ -20,3 +20,6 @@ References
 .. |build| image:: https://travis-ci.com/bio2bel/mirbase.svg?branch=master
     :target: https://travis-ci.com/bio2bel/mirbase
     :alt: Build Status
+
+.. |zenodo| image:: https://zenodo.org/badge/95350688.svg
+   :target: https://zenodo.org/badge/latestdoi/95350688
