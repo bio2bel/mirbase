@@ -5,18 +5,18 @@
 import logging
 from typing import Dict, List, Mapping, Optional
 
-from tqdm import tqdm
-
 from bio2bel import AbstractManager
 from bio2bel.manager.bel_manager import BELManagerMixin
 from bio2bel.manager.flask_manager import FlaskMixin
 from bio2bel.manager.namespace_manager import BELNamespaceManagerMixin
 from pybel import BELGraph
-from pybel.dsl import mirna
+from pybel.dsl import MicroRna
 from pybel.manager.models import Namespace, NamespaceEntry
+from tqdm import tqdm
+
 from .constants import MODULE_NAME
 from .download import get_species_df
-from .models import Base, MatureSequence, Sequence, Species
+from .models import Base, MatureSequence, Sequence, Species, SequenceXrefs
 from .parser import get_definitions
 
 __all__ = [
@@ -27,13 +27,14 @@ log = logging.getLogger(__name__)
 
 
 class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskMixin):
-    """MicroRNA nomenclature."""
+    """MicroRNA nomenclature and xrefs."""
 
     _base = Base
     module_name = MODULE_NAME
     flask_admin_models = [Sequence, MatureSequence, Species]
 
     namespace_model = Sequence
+    edge_model = SequenceXrefs
     identifiers_recommended = 'miRBase'
     identifiers_pattern = r'MI\d{7}'
     identifiers_miriam = 'MIR:00000078'
@@ -51,6 +52,10 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
     def count_species(self) -> int:
         """Count the species in the database."""
         return self._count_model(Species)
+
+    def count_xrefs(self) -> int:
+        """Count the sequence cross-references in the database."""
+        return self._count_model(SequenceXrefs)
 
     def summarize(self) -> Mapping[str, int]:
         """Summarize the contents of the database."""
@@ -146,11 +151,9 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
             mirbase_node = sequence.as_pybel()
 
             for xref in sequence.xrefs:
-                xref_node = mirna(
+                result.add_equivalence(mirbase_node, MicroRna(
                     namespace=xref.database,
                     identifier=xref.database_id,
-                )
-
-                result.add_equivalence(mirbase_node, xref_node)
+                ))
 
         return result
