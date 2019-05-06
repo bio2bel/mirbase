@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 
 class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskMixin):
-    """MicroRNA nomenclature and xrefs."""
+    """MicroRNA nomenclature."""
 
     _base = Base
     module_name = MODULE_NAME
