@@ -157,3 +157,7 @@ class Manager(AbstractManager, BELNamespaceManagerMixin, BELManagerMixin, FlaskM
                 ))
 
         return result
+
+    def normalize_terms(self, graph: BELGraph, use_tqdm: bool = True) -> None:
+        """Normalize miRBase nodes in the graph."""
+        log.warning('Not implemented yet!')
